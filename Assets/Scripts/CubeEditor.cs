@@ -4,34 +4,45 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [SelectionBase]
+[RequireComponent(typeof(Waypoint))]
 public class CubeEditor : MonoBehaviour {
 
-	[SerializeField][Range(5,15)] int gridSize = 10;
+	//[SerializeField][Range(5,15)] int gridSize = 10;
+    Vector3 gridPos;
+    Waypoint waypoint;
 
-	TextMesh textMesh;
-	// Use this for initialization
-	void Awake() 
+    void Awake() 
 	{
-		//print(name + ", awake");
+        //print(name + ", awake");
+        waypoint = GetComponent<Waypoint>();
 	}
 	void Start () {
 		//print(name + ", start");
 		
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		//print(name + ", updated");
-		Vector3 snapPos;		
+	void Update ()
+    {
+        //print(name + ", updated");
+        SnapToGrid();
+        UpdateLabel();
+    }
 
-		snapPos.x = Mathf.RoundToInt(transform.position.x/gridSize);
-		snapPos.y = Mathf.RoundToInt(transform.position.y/gridSize);
-		snapPos.z = Mathf.RoundToInt(transform.position.z/gridSize);
-		transform.position = snapPos*gridSize;
+    private void SnapToGrid()
+    {
+        if (!waypoint & GetComponent<Waypoint>()) {
+            waypoint = GetComponent<Waypoint>();
+        }
+        int gridSize = waypoint.GetGridSize();
+        gridPos = waypoint.GetGridPos();
+        transform.position = gridPos * gridSize;
+    }
 
-		textMesh = GetComponentInChildren<TextMesh>();
-		string lableText = snapPos.x.ToString() +" , "+snapPos.z.ToString();
-		textMesh.text = lableText;
-		gameObject.name = "Cube("+lableText+")";
-	}
+    private void UpdateLabel()
+    {
+        TextMesh textMesh = GetComponentInChildren<TextMesh>();
+        string lableText = gridPos.x.ToString() + " , " + gridPos.z.ToString();
+        textMesh.text = lableText;
+        gameObject.name = "Cube(" + lableText + ")";
+    }
 }

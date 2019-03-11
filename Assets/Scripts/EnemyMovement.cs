@@ -9,8 +9,9 @@ public class EnemyMovement : MonoBehaviour {
 	void Start () {
         //PrintAllWaypoints();
         //InvokeRepeating("PrintAllWaypoints", 0f, 1f);
-        StartCoroutine(FollowPath());
-        print("Back to start");
+
+        //StartCoroutine(FollowPath());
+        //print("Back to start");
     }
 
     IEnumerator FollowPath(){
