@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
+[SelectionBase]
 public class CubeEditor : MonoBehaviour {
 
 	[SerializeField][Range(5,15)] int gridSize = 10;
@@ -11,16 +12,16 @@ public class CubeEditor : MonoBehaviour {
 	// Use this for initialization
 	void Awake() 
 	{
-		print(name + ", awake");
+		//print(name + ", awake");
 	}
 	void Start () {
-		print(name + ", start");
+		//print(name + ", start");
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		print(name + ", updated");
+		//print(name + ", updated");
 		Vector3 snapPos;		
 
 		snapPos.x = Mathf.RoundToInt(transform.position.x/gridSize);
@@ -29,6 +30,8 @@ public class CubeEditor : MonoBehaviour {
 		transform.position = snapPos*gridSize;
 
 		textMesh = GetComponentInChildren<TextMesh>();
-		textMesh.text =snapPos.x.ToString() +" , "+snapPos.z.ToString();
+		string lableText = snapPos.x.ToString() +" , "+snapPos.z.ToString();
+		textMesh.text = lableText;
+		gameObject.name = "Cube("+lableText+")";
 	}
 }
