@@ -43,6 +43,6 @@ public class CubeEditor : MonoBehaviour {
         TextMesh textMesh = GetComponentInChildren<TextMesh>();
         string lableText = gridPos.x.ToString() + " , " + gridPos.z.ToString();
         textMesh.text = lableText;
-        gameObject.name = "Cube(" + lableText + ")";
+        gameObject.name = "(" + lableText + ")";
     }
 }

@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class Waypoint : MonoBehaviour {
 
-    Vector3Int gridPos;
-    const int gridSize = 10;
+    [SerializeField] Color exploredColor = Color.cyan;
+
+    // public ok here as is a data class
+    public bool isExplored = false;
+    public Waypoint exploredFrom;
+
+
+    Vector3Int gridPos = new Vector3Int(0,0,0);
+    const int gridSize = 10;    
 
     //public bool isStartPoint = false, isEndPoint = false;
 
+    //Consider setting own color in Update.
 
     public int GetGridSize() {
         return gridSize;
     }
 
-    public Vector3Int GetGridPos() {
+    public Vector3Int GetGridPos() {        // This is not the real vector
         gridPos.x = Mathf.RoundToInt(transform.position.x / gridSize);
         gridPos.y = Mathf.RoundToInt(transform.position.y / gridSize);
         gridPos.z = Mathf.RoundToInt(transform.position.z / gridSize);
@@ -46,6 +54,9 @@ public class Waypoint : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (isExplored && exploredFrom)
+        {
+            SetTopColor(exploredColor);
+        }
 	}
 }

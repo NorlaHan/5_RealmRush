@@ -9,53 +9,84 @@ public class PathFinder : MonoBehaviour
 
     Dictionary<Vector3Int, Waypoint> grid = new Dictionary<Vector3Int, Waypoint>();
     Queue<Waypoint> queue = new Queue<Waypoint>();
-    [SerializeField] bool isRunning = true; 
+
+    bool isRunning = true; // For stopping pathfing. when the end is reached.
+
+    Waypoint searchCenter;
+    List<Waypoint> path = new List<Waypoint>();
+
+    // Prevent infinity loop
+    [SerializeField] int exploreCount = 1;
+    public int exploreLimit = 3;
 
     Vector3Int[] directions = {
-        new Vector3Int(0,0,1) ,
-        new Vector3Int(1,0,0),
-        new Vector3Int(0,0,-1),
-        new Vector3Int(-1,0,0)
+        new Vector3Int(0,0,1) ,     // up
+        new Vector3Int(1,0,0),      // right
+        new Vector3Int(0,0,-1),     // down
+        new Vector3Int(-1,0,0)      // left
     };
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //if (startWaypoint == endWaypoint)
-        //{
-        //    Debug.LogWarning("Start and End are the same, process terminated");
-        //    return;
-        //}
 
-        LoadBlocks();
-        ColorStartAndEnd();
-        //ExploreNeighbor();
-        PathFinding();
+    void Awake()        // TODO maybe happens when the path is asked?
+    {
+        LoadBlocks();       // Count all the blocks into the distionary.
+        ColorStartAndEnd(); // Mark out the start and End.
     }
 
-    private void PathFinding()
+    public List<Waypoint> GetPath() {
+        BreadFirstSearch();
+        CreatPath();
+        return path;
+    }
+
+    private void CreatPath()
     {
-        queue.Enqueue(startWaypoint);
-        while (queue.Count > 0 && isRunning)
-        {
-            var searchCenter = queue.Dequeue();
-            print("Searching from " + searchCenter);    // TODO remove log
-            HaltIfEndFound(searchCenter);
-            ExploreNeighbor(searchCenter);
+        path.Add(endWaypoint);
+
+        Waypoint previous = endWaypoint.exploredFrom;
+        while (previous != startWaypoint) {
+            // Add intermediate waypoints
+            path.Add(previous);
+            previous = previous.exploredFrom;
         }
+        // Add startWaypoint
+        path.Add(startWaypoint);
+
+        // Reverse the list
+        path.Reverse();
+    }
+
+    private void BreadFirstSearch()
+    {
+        queue.Enqueue(startWaypoint);   // put startWaypoint in queue.
+        while (queue.Count > 0 && isRunning && exploreCount <= exploreLimit)
+        {
+            Debug.LogWarning("Exploration " + exploreCount + ". (Max explaration is " + exploreLimit + ")");
+            exploreCount++;     // prevent infinity loop.
+
+            print(queue.Count + " waiting in queue.");
+            searchCenter = queue.Dequeue();         // remove from queue and start explore.
+            searchCenter.isExplored = true;
+            
+            print("===== Searching from " + searchCenter.name + searchCenter.GetGridPos() + " =====");    // TODO remove log
+            //HaltIfEndFound();
+            ExploreNeighbor();
+        }
+
+        // TODO Work out path.
         print("Finished pathfinding?");
     }
 
-    private void HaltIfEndFound(Waypoint searchCenter)
+    private void HaltIfEndFound()
     {
-        if (startWaypoint == endWaypoint)
+        if (searchCenter == endWaypoint)
         {
-            Debug.LogWarning("Start and End are the same, process terminated"); // TODO remove log
+            Debug.LogWarning("End point found, process terminated"); // TODO remove log
             isRunning = false;
         }
     }
 
-    private void ExploreNeighbor(Waypoint from)
+    private void ExploreNeighbor()
     {
         if (!isRunning)
         {
@@ -65,22 +96,47 @@ public class PathFinder : MonoBehaviour
         {
             //print(direction);
 
-            Vector3Int neighborCoordinates = from.GetGridPos() + direction;
-
-            try
+            Vector3Int neighborKey = searchCenter.GetGridPos() + direction;
+            if (grid.ContainsKey(neighborKey))
             {
-                print("Exploring" + neighborCoordinates);
-                Waypoint neighbor = grid[neighborCoordinates];
-                neighbor.SetTopColor(Color.blue);       //TODO move later
-                queue.Enqueue(neighbor);
-                print("Queueing " + neighbor);
+                QueueNewNeighbor(neighborKey);
             }
-            catch
+            else
             {
-                //Do nothing
-            }            
+                Debug.LogWarning("Neighbor with key " + neighborKey + " do not exit.");
+            }
         }
     }
+
+    private void QueueNewNeighbor(Vector3Int neighborKey)
+    {
+
+        print("Exploring" + grid[neighborKey].name + neighborKey);
+
+        Waypoint neighbor = grid[neighborKey];
+
+        if (neighbor.isExplored || queue.Contains(neighbor))
+        {
+            Debug.LogWarning(neighbor + " has been explored or already in queue.");
+        }
+        else
+        {
+            neighbor.exploredFrom = searchCenter;
+
+            if (neighbor == endWaypoint)
+            {
+                neighbor.SetTopColor(Color.yellow);
+                Debug.LogWarning("End point found, process terminated"); // TODO remove log
+                isRunning = false;
+                return;
+            }
+            neighbor.SetTopColor(Color.blue);       //TODO move later
+            queue.Enqueue(neighbor);                // put found neighbor in queue.
+            
+            print("Queueing " + neighbor);
+        }
+    }
+    
 
     private void ColorStartAndEnd()
     {
@@ -94,7 +150,7 @@ public class PathFinder : MonoBehaviour
         foreach (Waypoint waypoint in waypoints)
         {
             //Is there any overlapping Blocks?
-            var gridPos = waypoint.GetGridPos();
+            var gridPos = waypoint.GetGridPos();    // the key is the compressed vector3
             if (grid.ContainsKey(gridPos))
             {
                 Debug.LogWarning("Overlapping block " + waypoint);
@@ -102,7 +158,7 @@ public class PathFinder : MonoBehaviour
             else
             {
                 //Add to dictionary
-                grid.Add(gridPos, waypoint);
+                grid.Add(gridPos, waypoint);    
                 waypoint.SetTopColor(Color.gray);
             }
         }
