@@ -49,19 +49,24 @@ public class PathFinder : MonoBehaviour
 
     private void CreatPath()
     {
-        path.Add(endWaypoint);
+        SetAsPath(endWaypoint);
 
         Waypoint previous = endWaypoint.exploredFrom;
         while (previous != startWaypoint) {
             // Add intermediate waypoints
-            path.Add(previous);
+            SetAsPath(previous);
             previous = previous.exploredFrom;
         }
         // Add startWaypoint
-        path.Add(startWaypoint);
+        SetAsPath(startWaypoint);
 
         // Reverse the list
         path.Reverse();
+    }
+
+    private void SetAsPath(Waypoint waypoint) {
+        path.Add(waypoint);
+        waypoint.isPlaceable = false;
     }
 
     private void BreadFirstSearch()
@@ -82,7 +87,7 @@ public class PathFinder : MonoBehaviour
         }
 
         // TODO Work out path.
-        print("Finished pathfinding?");
+        //print("Finished pathfinding?");
     }
 
     private void HaltIfEndFound()

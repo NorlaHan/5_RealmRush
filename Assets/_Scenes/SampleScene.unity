@@ -307,7 +307,7 @@ PrefabInstance:
     - target: {fileID: 5455930527685401265, guid: cd0116becc037c545859d00cb493a907,
         type: 3}
       propertyPath: weaponType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd0116becc037c545859d00cb493a907, type: 3}
@@ -4315,7 +4315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f42abd0cb42b143914d6a90133b8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secondsBetweenSpawn: 1
+  secondsBetweenSpawn: 3
+  maxEnemies: 8
   spawnSpots:
   - {fileID: 1678256884}
   - {fileID: 1128716723}
@@ -5683,7 +5684,7 @@ PrefabInstance:
     - target: {fileID: 5455930527685401265, guid: cd0116becc037c545859d00cb493a907,
         type: 3}
       propertyPath: weaponType
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd0116becc037c545859d00cb493a907, type: 3}

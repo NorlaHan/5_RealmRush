@@ -13,14 +13,14 @@ public class ParticleManagement : MonoBehaviour
     void Start()
     {
         particleSystem = GetComponent<ParticleSystem>();
-        lifeTime = particleSystem.duration;
+        lifeTime = particleSystem.main.duration ;
     }
 
     // Update is called once per frame
     void Update()
     {
         lifeTime -= Time.deltaTime;
-        if (!particleSystem.loop && lifeTime <= 0)
+        if (!particleSystem.main.loop && lifeTime <= 0)
         {
             Destroy(gameObject);
         }

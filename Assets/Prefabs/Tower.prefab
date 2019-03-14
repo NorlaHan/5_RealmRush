@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 8037679405893090015}
+  targetEnemy: {fileID: 0}
   weaponType: 0
   attackRange: 30
   armory:
@@ -53,7 +54,6 @@ MonoBehaviour:
   - {fileID: 784313923954778788}
   - {fileID: 3394430866506299053}
   objectToPan: {fileID: 8843914167056116774}
-  targetEnemy: {fileID: 0}
 --- !u!1 &8248923718499966205
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +283,7 @@ PrefabInstance:
     - target: {fileID: 2139574287704070808, guid: 5667597781fa1a047ab1fe5a7da0bd78,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.83
+      value: -11.65
       objectReference: {fileID: 0}
     - target: {fileID: 2139574287704070808, guid: 5667597781fa1a047ab1fe5a7da0bd78,
         type: 3}
@@ -324,16 +324,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7451647371348279771, guid: 5667597781fa1a047ab1fe5a7da0bd78,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7451647371348279771, guid: 5667597781fa1a047ab1fe5a7da0bd78,
-        type: 3}
-      propertyPath: looping
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7451647371348279771, guid: 5667597781fa1a047ab1fe5a7da0bd78,
         type: 3}

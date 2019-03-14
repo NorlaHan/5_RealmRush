@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d281bde5fca1fef439b25af92dd0967b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitPoint: 3
+  hitPoint: 20
   damage: 0
   score: 0
   hitEffect: {fileID: 3737408208713860831, guid: 01b14290460bf0148a1d3bca39816aff,

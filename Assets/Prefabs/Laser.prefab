@@ -866,7 +866,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 8
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4711,3 +4711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eef77283e48730479371dd39b613efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  faction: 0
+  weaponType: 1
+  damage: 1
+  range: 30

@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] float secondsBetweenSpawn = 3;
+    [SerializeField] int maxEnemies = 3;
     [SerializeField] Transform[] spawnSpots = new Transform[0];
     [SerializeField] GameObject[] enemies = new GameObject[0];
 
@@ -15,7 +16,7 @@ public class EnemySpawner : MonoBehaviour
     }
 
     IEnumerator RepeatedlySpawnEnemies() {
-        while (transform.GetChildCount()-1 < 3) // -1 is for always have a SpawnSpots.
+        while (transform.childCount -1 < maxEnemies) // -1 is for always have a SpawnSpots.
         {
             GameObject spawned = Instantiate(enemies[0], spawnSpots[0].position, Quaternion.identity);
             spawned.transform.SetParent(transform);
