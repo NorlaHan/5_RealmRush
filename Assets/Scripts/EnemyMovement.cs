@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour {
 
+    [SerializeField][Range(0.1f,10f)] float enemySpeed;
+    
     PathFinder pathFinder;
     List<Waypoint> path;
 
@@ -20,10 +22,9 @@ public class EnemyMovement : MonoBehaviour {
         print("Starting patrol...");
         foreach (Waypoint waypoint in path)
         {
-            print("Visting " + waypoint.name);
+            //print("Visting " + waypoint.name);
             transform.position = waypoint.transform.position;
-            yield return new WaitForSeconds(1f);
-            // call a second
+            yield return new WaitForSeconds(1f/enemySpeed);
         }
         print("Ending patrol");
     }

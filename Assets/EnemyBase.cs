@@ -51,18 +51,18 @@ public class EnemyBase : MonoBehaviour
 
     private void OnParticleCollision(GameObject obj)
     {
+        //print(obj + " particle hit " + name);
         WeaponBase weapon = obj.GetComponent<WeaponBase>();
-        if (weapon.GetFaction() == WeaponBase.Faction.player)
+        if (weapon.GetFaction() == WeaponBase.Faction.player || weapon.GetFaction() == WeaponBase.Faction.neutral)   // Avoid friendly fire.
         {
-            print(obj + "particle hit");
-            hitPoint -= weapon.GetDamage();
-            TakeDamage();
+            TakeDamage(weapon);
         }
         
     }
 
-    private void TakeDamage()
-    {
+    private void TakeDamage(WeaponBase weapon)
+    { 
+        hitPoint -= weapon.GetDamage();
         if (hitPoint <= 0)
         {
             // Die event
@@ -72,7 +72,7 @@ public class EnemyBase : MonoBehaviour
         }
         else {
             // Damage event
-            GameObject FX = Instantiate(hitEffect, transform.Find("HitPos").transform.position, Quaternion.identity);
+            GameObject FX = Instantiate(hitEffect, transform.Find("HitPos").position, Quaternion.identity);
             FX.transform.SetParent(parent.transform);
         }
     }

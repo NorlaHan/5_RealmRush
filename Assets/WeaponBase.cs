@@ -10,6 +10,7 @@ public class WeaponBase : MonoBehaviour
     public enum WeaponType { bullet, laser, bazooka };
     [SerializeField] WeaponType weaponType = WeaponType.laser;
     [SerializeField] int damage = 1;
+    [SerializeField] float range = 30;
 
 
     //public class WeaponInfo{
@@ -38,6 +39,10 @@ public class WeaponBase : MonoBehaviour
         return damage;
     }
 
+    public float GetRange() {
+        return range;
+    }
+    
     // Start is called before the first frame update
     void Start()
     {

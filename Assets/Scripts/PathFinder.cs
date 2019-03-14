@@ -34,9 +34,17 @@ public class PathFinder : MonoBehaviour
     }
 
     public List<Waypoint> GetPath() {
+        if (path.Count == 0)
+        {
+            CaculatePath();
+        }
+        return path;
+    }
+
+    private void CaculatePath()
+    {
         BreadFirstSearch();
         CreatPath();
-        return path;
     }
 
     private void CreatPath()
@@ -61,14 +69,14 @@ public class PathFinder : MonoBehaviour
         queue.Enqueue(startWaypoint);   // put startWaypoint in queue.
         while (queue.Count > 0 && isRunning && exploreCount <= exploreLimit)
         {
-            Debug.LogWarning("Exploration " + exploreCount + ". (Max explaration is " + exploreLimit + ")");
+            //Debug.LogWarning("Exploration " + exploreCount + ". (Max explaration is " + exploreLimit + ")");
             exploreCount++;     // prevent infinity loop.
 
-            print(queue.Count + " waiting in queue.");
+            //print(queue.Count + " waiting in queue.");
             searchCenter = queue.Dequeue();         // remove from queue and start explore.
             searchCenter.isExplored = true;
             
-            print("===== Searching from " + searchCenter.name + searchCenter.GetGridPos() + " =====");    // TODO remove log
+            //print("===== Searching from " + searchCenter.name + searchCenter.GetGridPos() + " =====");    // TODO remove log
             //HaltIfEndFound();
             ExploreNeighbor();
         }
@@ -103,7 +111,7 @@ public class PathFinder : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Neighbor with key " + neighborKey + " do not exit.");
+                //Debug.LogWarning("Neighbor with key " + neighborKey + " do not exit.");
             }
         }
     }
@@ -111,13 +119,13 @@ public class PathFinder : MonoBehaviour
     private void QueueNewNeighbor(Vector3Int neighborKey)
     {
 
-        print("Exploring" + grid[neighborKey].name + neighborKey);
+        //print("Exploring" + grid[neighborKey].name + neighborKey);
 
         Waypoint neighbor = grid[neighborKey];
 
         if (neighbor.isExplored || queue.Contains(neighbor))
         {
-            Debug.LogWarning(neighbor + " has been explored or already in queue.");
+            //Debug.LogWarning(neighbor + " has been explored or already in queue.");
         }
         else
         {
@@ -126,14 +134,14 @@ public class PathFinder : MonoBehaviour
             if (neighbor == endWaypoint)
             {
                 neighbor.SetTopColor(Color.yellow);
-                Debug.LogWarning("End point found, process terminated"); // TODO remove log
+                //Debug.LogWarning("End point found, process terminated"); // TODO remove log
                 isRunning = false;
                 return;
             }
             neighbor.SetTopColor(Color.blue);       //TODO move later
             queue.Enqueue(neighbor);                // put found neighbor in queue.
             
-            print("Queueing " + neighbor);
+            //print("Queueing " + neighbor);
         }
     }
     
@@ -153,7 +161,7 @@ public class PathFinder : MonoBehaviour
             var gridPos = waypoint.GetGridPos();    // the key is the compressed vector3
             if (grid.ContainsKey(gridPos))
             {
-                Debug.LogWarning("Overlapping block " + waypoint);
+                //Debug.LogWarning("Overlapping block " + waypoint);
             }
             else
             {
@@ -164,8 +172,6 @@ public class PathFinder : MonoBehaviour
         }
         //print("Loaded " + grid.Count + " block(s)");
     }
-
-    // Update is called once per frame
     void Update()
     {
         
