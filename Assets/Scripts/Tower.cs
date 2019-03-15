@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class Tower : MonoBehaviour
 {
     public enum WeaponType { bullet, laser, bazooka };
@@ -10,6 +11,7 @@ public class Tower : MonoBehaviour
     [Header("State")]
     [SerializeField] GameObject weapon;
     [SerializeField] Transform targetEnemy;
+    public Waypoint baseWaypoint;
     [Space(5f)]
 
     [Header("Attributes")]

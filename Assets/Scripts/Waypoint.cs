@@ -5,9 +5,8 @@ using UnityEngine;
 public class Waypoint : MonoBehaviour {
 
     [SerializeField] Color exploredColor = Color.cyan;
-    [SerializeField] Tower[] towerPrefabs = new Tower[1];
 
-    private GameObject towers;
+    private TowerFactory towerFactory;
 
     // public ok here as is a data class
     public bool isExplored = false;
@@ -37,11 +36,7 @@ public class Waypoint : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (!towers)
-        {
-            towers = GameObject.Find("Towers");
-        }
-        
+        towerFactory = FindObjectOfType<TowerFactory>();
 	}
 	
 	// Update is called once per frame
@@ -54,16 +49,11 @@ public class Waypoint : MonoBehaviour {
 
     private void OnMouseOver()
     {
-        // detect mouse click
-        // if clicked
         if (Input.GetMouseButtonDown(0))
         {
             if (isPlaceable)
             {
-                print("Place tower on " + this);
-                GameObject towerSpawned = Instantiate(towerPrefabs[0], transform.position, Quaternion.identity).gameObject;
-                towerSpawned.transform.SetParent(towers.transform);
-                isPlaceable = false;
+                towerFactory.AddTower(this);
             }else {
                 print("Can't touch this.");
             }

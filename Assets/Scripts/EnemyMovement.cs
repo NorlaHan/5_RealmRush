@@ -7,10 +7,8 @@ public class EnemyMovement : MonoBehaviour {
     [SerializeField][Range(0.1f,10f)] float enemySpeed;
     
     PathFinder pathFinder;
-    List<Waypoint> path;
+    [SerializeField]List<Waypoint> path;
 
-    //[SerializeField] List<Waypoint> pathBlocks;
-    // Use this for initialization
     void Start () {
         pathFinder = FindObjectOfType<PathFinder>();
         path = pathFinder.GetPath();
@@ -26,15 +24,6 @@ public class EnemyMovement : MonoBehaviour {
             transform.position = waypoint.transform.position;
             yield return new WaitForSeconds(1f/enemySpeed);
         }
-        print("Ending patrol");
+        gameObject.GetComponent<EnemyBase>().ReachGoal();
     }
-
-    void PrintHello() {
-        print("Hello");
-    }
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
 }

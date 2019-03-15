@@ -14,19 +14,35 @@ public class EnemyBase : MonoBehaviour
     [Header("Effects")]
     [SerializeField] GameObject hitEffect;
     [SerializeField] GameObject explosionEffect;
+    [SerializeField] GameObject attackEffect;
 
-    GameObject parent;
+    GameObject particleParent;
+    Transform hitPos;
+    PlayerHealth playerHealth;
+
+    public int GetDamage() {
+        return damage;
+    }
+
+    public int GetScore() {
+        return score;
+    }
 
     void Start()
     {
         if (!GameObject.Find("SpawnedAtRuntime"))
         {
-            parent = new GameObject("SpawnedAtRuntime");
+            particleParent = new GameObject("SpawnedAtRuntime");
         }
         else
         {
-            parent = GameObject.Find("SpawnedAtRuntime");
+            particleParent = GameObject.Find("SpawnedAtRuntime");
         }
+        if (!hitPos)
+        {
+            hitPos = transform.Find("hitPos");
+        }
+        playerHealth = GameObject.FindObjectOfType<PlayerHealth>();
     }
 
     void Update()
@@ -35,10 +51,13 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    // Hit point system
+    public void ReachGoal() {
+        GameObject FX = Instantiate(attackEffect, transform.position, Quaternion.identity);
+        FX.transform.SetParent(particleParent.transform);
+        Destroy(FX, FX.GetComponent<ParticleSystem>().main.duration);
+        Destroy(gameObject);
+    }
 
-    // Projectile collide with the enemy
-    // Damage effect trigger
     private void OnCollisionEnter(Collision obj)
     {
         print(obj + " collision Hit");
@@ -46,7 +65,7 @@ public class EnemyBase : MonoBehaviour
 
     private void OnTriggerEnter(Collider obj)
     {
-        print(obj + " trigger Hit");
+        //print(obj + " trigger Hit");
     }
 
     private void OnParticleCollision(GameObject obj)
@@ -66,14 +85,15 @@ public class EnemyBase : MonoBehaviour
         if (hitPoint <= 0)
         {
             // Die event
+            playerHealth.GetScore(score);
             GameObject FX = Instantiate(explosionEffect, transform.position, Quaternion.identity);
-            FX.transform.SetParent(parent.transform);
+            FX.transform.SetParent(particleParent.transform);
+            Destroy(FX, FX.GetComponent<ParticleSystem>().main.duration);
             Destroy(gameObject);
         }
         else {
-            // Damage event
-            GameObject FX = Instantiate(hitEffect, transform.Find("HitPos").position, Quaternion.identity);
-            FX.transform.SetParent(parent.transform);
+            hitEffect.GetComponent<ParticleSystem>().Play();
+            hitEffect.GetComponent<AudioSource>().Play();
         }
     }
 }
